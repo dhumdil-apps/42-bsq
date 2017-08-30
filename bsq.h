@@ -2,6 +2,7 @@
 
 # define BSQ_H
 
+# define BUF_SIZE 4096
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>

@@ -36,7 +36,7 @@ void try_print(char *buf, int *x, char c)
 {
 	buf[(*x)++] = c;
 
-	if (*x == 4096)
+	if (*x == BUF_SIZE)
 	{
 		write(1, buf, *x);
 		*x = 0;

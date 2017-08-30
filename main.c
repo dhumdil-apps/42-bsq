@@ -36,14 +36,14 @@ int	ft_read_map(int input)
 	int		first_line;
 	char	s[5];
 
-	char buf[4096];
+	char buf[BUF_SIZE];
 	int k;
 
 	ft_init_map();
 	first_line = 1;
 	i = 0;
 	j = 0;
-	while ((n = read(input, buf, 4096)) > 0)
+	while ((n = read(input, buf, BUF_SIZE)) > 0)
 	{
 		k = 0;
 		while (k < n)
