@@ -36,7 +36,7 @@ int	ft_read_map(int input)
 	int		first_line;
 	char	s[5];
 
-	char buf[4097];
+	char buf[4096];
 	int k;
 
 	ft_init_map();
@@ -45,11 +45,10 @@ int	ft_read_map(int input)
 	j = 0;
 	while ((n = read(input, buf, 4096)) > 0)
 	{
-		buf[n] = '\0';
 		k = 0;
-		while (buf[k] != '\0')
+		while (k < n)
 		{
-			if (g_m.lines != 0 && i == g_m.lines)
+			if (!first_line && g_m.lines != 0 && i == g_m.lines)
 				return (1);
 			if (first_line)
 			{
@@ -103,7 +102,6 @@ int	ft_read_map(int input)
 	}
 	if (n == -1 || i < g_m.lines)
 		return (1);
-    // TODO: find largest square
 	ft_print_map();
 	printf("max=%d, i=%d, j=%d\n", g_m.max.val,g_m.max.i,g_m.max.j);
 	ft_free_rows();
