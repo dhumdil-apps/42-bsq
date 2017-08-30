@@ -44,7 +44,7 @@ int	ft_read_map(int input);
 // ft_print.c
 void	ft_putchar(char c);
 void	ft_putstr(char *s);
-void ft_print_map();
+void ft_print_map(char buf[]);
 
 // ft_list.c
 void	ft_init_map();

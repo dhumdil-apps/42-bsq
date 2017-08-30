@@ -32,13 +32,26 @@ void ft_putnbr(int nr)
 		ft_compute_nbr(nr);
 }
 
-void ft_print_map()
+void try_print(char *buf, int *x, char c)
+{
+	buf[(*x)++] = c;
+
+	if (*x == 4096)
+	{
+		write(1, buf, *x);
+		*x = 0;
+	}
+}
+
+void ft_print_map(char buf[])
 {
 	int i;
 	int j;
+	int x;
 	t_el *p;
 
 	i = 0;
+	x = 0;
 	while (i < g_m.lines)
 	{
 		j = 0;
@@ -46,23 +59,24 @@ void ft_print_map()
 		while (p != NULL)
 		{
 			if (p->c == 0)
-				ft_putchar(g_m.obstacle);
+				try_print(buf, &x, g_m.obstacle);
 			else
 			{
 				if (i >= (g_m.max.i - g_m.max.val + 1) && i <= g_m.max.i)
 				{
 					if (j >= (g_m.max.j - g_m.max.val + 1) && j <= g_m.max.j)
-						ft_putchar(g_m.full);
+						try_print(buf, &x, g_m.full);
 					else
-						ft_putchar(g_m.empty);
+						try_print(buf, &x, g_m.empty);
 				}
 				else
-					ft_putchar(g_m.empty);
+					try_print(buf, &x, g_m.empty);
 			}
 			p = p->next;
 			j++;
 		}
-		ft_putchar('\n');
+		try_print(buf, &x, '\n');
 		i++;
 	}
+	write(1, buf, x);
 }

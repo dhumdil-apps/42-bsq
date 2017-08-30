@@ -102,7 +102,7 @@ int	ft_read_map(int input)
 	}
 	if (n == -1 || i < g_m.lines)
 		return (1);
-	ft_print_map();
+	ft_print_map(buf);
 	printf("max=%d, i=%d, j=%d\n", g_m.max.val,g_m.max.i,g_m.max.j);
 	ft_free_rows();
 	return (0);
