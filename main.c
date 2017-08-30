@@ -32,68 +32,76 @@ int	ft_read_map(int input)
 {
 	int		i;
 	int		j;
-	int		err;
+	int		n;
 	int		first_line;
-	char	c;
 	char	s[5];
+
+	char buf[4097];
+	int k;
 
 	ft_init_map();
 	first_line = 1;
 	i = 0;
 	j = 0;
-	while ((err = read(input, &c, 1)) > 0)
+	while ((n = read(input, buf, 4096)) > 0)
 	{
-		if (g_m.lines != 0 && i == g_m.lines)
-			return (1);
-		if (first_line)
+		buf[n] = '\0';
+		k = 0;
+		while (buf[k] != '\0')
 		{
-			if (ft_update_legend(c, s, &i, &first_line) == 1)
+			if (g_m.lines != 0 && i == g_m.lines)
 				return (1);
-			if (!first_line)
+			if (first_line)
 			{
-				if (ft_init_lines() == 1)
+				if (ft_update_legend(buf[k], s, &i, &first_line) == 1)
 					return (1);
-				i = 0;
+				if (!first_line)
+				{
+					if (ft_init_lines() == 1)
+						return (1);
+					i = 0;
+				}
 			}
-		}
-		else if (c == '\n')
-		{
-			if (g_m.cols == 0)
-				g_m.cols = j;
-			else if (j != g_m.cols)
-				return (1);
-			j = 0;
-			g_m.first = g_m.row[i];
-			i++;
-		}
-		else
-		{
-			if (!is_valid(c))
-				return (1);
-			if (i == 0 || j == 0)
+			else if (buf[k] == '\n')
 			{
-				if (c == g_m.obstacle)
-					ft_list_push_first(i, 0);
-				else
-					ft_list_push_first(i, 1);
+				if (g_m.cols == 0)
+					g_m.cols = j;
+				else if (j != g_m.cols)
+					return (1);
+				j = 0;
+				g_m.first = g_m.row[i];
+				i++;
 			}
 			else
 			{
-				if (c == g_m.obstacle)
+				if (!is_valid(buf[k]))
+					return (1);
+				if (i == 0 || j == 0)
 				{
-					if (ft_list_push_next(i, 0, 0))
-						return (1);
+					if (buf[k] == g_m.obstacle)
+						ft_list_push_first(i, 0);
+					else
+						ft_list_push_first(i, 1);
 				}
 				else
 				{
-					if (ft_list_push_next(i, j, 1) == 1)
-						return (1);
+					if (buf[k] == g_m.obstacle)
+					{
+						if (ft_list_push_next(i, 0, 0))
+							return (1);
+					}
+					else
+					{
+						if (ft_list_push_next(i, j, 1) == 1)
+							return (1);
+					}
 				}
+				j++;
 			}
-			j++;
+			k++;
 		}
 	}
-	if (err == -1 || i < g_m.lines)
+	if (n == -1 || i < g_m.lines)
 		return (1);
     // TODO: find largest square
 	ft_print_map();
